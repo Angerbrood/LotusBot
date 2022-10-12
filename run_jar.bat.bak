@@ -1,0 +1,3 @@
+@echo off
+cd c:\Users\petzd\IdeaProjects\LotusBot\target\
+start javaw -jar lotus-webshop-bot-docker-jar-with-dependencies.jar
