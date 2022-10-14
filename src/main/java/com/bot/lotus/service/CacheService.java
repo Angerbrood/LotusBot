@@ -25,13 +25,7 @@ public class CacheService {
 
     public List<LotusItem> readItemsFromCache() {
         LOG.info("Starting to read saved items from cache");
-
-        File file = streamToFile(getClass().getClassLoader().getResourceAsStream(databaseName));
-        final String path = file.getAbsolutePath();
-        if(StringUtils.isEmpty(path)) {
-            throw new IllegalArgumentException("Unable to load db");
-        }
-        final String databaseUrl = JDBC_URL + path;
+        final String databaseUrl = JDBC_URL + databaseName;
         List<LotusItem> results;
         try(JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource(databaseUrl)) {
             final Dao<LotusItem, Long> lotusItemDao = DaoManager.createDao(connectionSource, LotusItem.class);
@@ -51,12 +45,7 @@ public class CacheService {
 
     public void writeToCache(final List<LotusItem> lotusItems) {
         LOG.info("Starting to write to cache");
-        File file = streamToFile(getClass().getClassLoader().getResourceAsStream(databaseName));
-        final String path = file.getAbsolutePath();
-        if(StringUtils.isEmpty(path)) {
-            throw new IllegalArgumentException("Unable to load db");
-        }
-        final String databaseUrl = JDBC_URL + path;
+        final String databaseUrl = JDBC_URL + databaseName;
         try(JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource(databaseUrl)) {
             final Dao<LotusItem, Long> lotusItemDao = DaoManager.createDao(connectionSource, LotusItem.class);
             TableUtils.dropTable(lotusItemDao, true);
