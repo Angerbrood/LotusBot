@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
         LOG.info("Starting LotusBot");
-        final CacheService cacheService = new CacheService("jdbc:sqlite:cache.db");
+        final CacheService cacheService = new CacheService("cache.db");
         final LotusWebsiteDataFetcher lotusWebsiteDataFetcher = new LotusWebsiteDataFetcher();
         final CompareService compareService = new CompareService();
         final MailHandler mailHandler = new MailHandler();
