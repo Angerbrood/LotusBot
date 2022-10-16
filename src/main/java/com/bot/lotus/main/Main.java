@@ -26,7 +26,8 @@ public class Main {
         cacheService.writeToCache(fetchedLotusItem);
         final List<String> notificationToSend = compareService.compare(savedLotusItem, fetchedLotusItem);
         if (!notificationToSend.isEmpty()) {
-            mailHandler.sendNotifications(notificationToSend);
+            //mailHandler.sendNotifications(notificationToSend);
+        	LOG.info("Should be sending mails");
         }
     }
 }
