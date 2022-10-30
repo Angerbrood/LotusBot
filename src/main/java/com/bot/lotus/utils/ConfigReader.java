@@ -20,7 +20,7 @@ public class ConfigReader {
         try (InputStream input = ConfigReader.class.getClassLoader().getResourceAsStream(filePath)) {
             if (input == null) {
                 LOG.error(String.format("Sorry, unable to find %s", filePath));
-                return null;
+                throw new IllegalArgumentException();
             }
             Properties prop = new Properties();
             prop.load(input);
@@ -28,7 +28,7 @@ public class ConfigReader {
             return prop;
         } catch (Exception ex) {
             LOG.error(ex.getMessage(), ex);
-            return null;
+            throw new IllegalArgumentException(ex);
         }
     }
 
@@ -36,7 +36,7 @@ public class ConfigReader {
         final InputStream inputStream = ConfigReader.class.getClassLoader().getResourceAsStream(filePath);
         if (inputStream == null) {
             LOG.error(String.format("Sorry, unable to find %s", filePath));
-            return null;
+            throw new IllegalArgumentException();
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             LOG.info(String.format("Reading text file from %s", filePath));
@@ -50,7 +50,7 @@ public class ConfigReader {
             return results;
         } catch(Exception ex) {
             LOG.error(ex.getMessage(), ex);
-            return Collections.emptyList();
+            throw new IllegalArgumentException(ex);
         }
     }
 }

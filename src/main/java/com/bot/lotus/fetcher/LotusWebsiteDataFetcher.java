@@ -60,7 +60,7 @@ public class LotusWebsiteDataFetcher {
 
     private String readValueFromElement(final Element element) {
         final String value = element.childNode(0).outerHtml();
-        return ValueFormatter.formatValue(value);
+        return ValueFormatter.formatPriceValue(value);
     }
 
     private Element getElementByClassAndTag(final Document document, final String cssClass, final String tag) {
