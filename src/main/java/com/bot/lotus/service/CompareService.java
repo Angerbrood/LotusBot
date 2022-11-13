@@ -2,10 +2,6 @@ package com.bot.lotus.service;
 
 import com.bot.lotus.log.LotusLogger;
 import com.bot.lotus.model.LotusItem;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;

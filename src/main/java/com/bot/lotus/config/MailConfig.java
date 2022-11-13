@@ -13,8 +13,11 @@ public class MailConfig {
     private static final String PROPERTY_PATH = "mail.properties";
     private static final LotusLogger LOG = LotusLogger.of(LoggerFactory.getLogger(MailConfig.class));
 
+    private boolean sendMails;
+
     public Session initConfig() {
         final Properties properties = ConfigReader.readProperties(PROPERTY_PATH);
+        sendMails = Boolean.parseBoolean(properties.getProperty("debug.sendMails"));
         if(properties == null) {
             LOG.error("Unable to create mail session object");
             return null;
@@ -31,5 +34,9 @@ public class MailConfig {
                 return new PasswordAuthentication(username, password);
             }
         });
+    }
+
+    public boolean needToSendMails() {
+        return sendMails;
     }
 }

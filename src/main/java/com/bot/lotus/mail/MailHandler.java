@@ -24,7 +24,9 @@ public class MailHandler {
 
     public void sendNotifications(final List<String> notifications) {
         final Session session = mailConfig.initConfig();
-        notifications.forEach(current -> sendMailToRecipients(current, session));
+        if (mailConfig.needToSendMails()) {
+            notifications.forEach(current -> sendMailToRecipients(current, session));
+        }
     }
 
     private void sendMailToRecipients(final String body, final Session session) {

@@ -1,9 +1,10 @@
 package com.bot.lotus.main;
 
+import com.bot.lotus.config.HibernateUtil;
 import com.bot.lotus.log.LotusLogger;
 import com.bot.lotus.mail.MailHandler;
 import com.bot.lotus.model.LotusItem;
-import com.bot.lotus.service.CacheService;
+import com.bot.lotus.dao.LotusItemDao;
 import com.bot.lotus.service.CompareService;
 import com.bot.lotus.fetcher.LotusWebsiteDataFetcher;
 import org.slf4j.LoggerFactory;
@@ -15,17 +16,15 @@ public class Main {
 
     public static void main(String[] args) {
         LOG.info("Starting LotusBot");
-        final CacheService cacheService = new CacheService("cache.db");
+        final LotusItemDao lotusDao = new LotusItemDao(HibernateUtil.getSessionFactory());
+        final List<LotusItem> savedLotusItem = lotusDao.findAll();
         final LotusWebsiteDataFetcher lotusWebsiteDataFetcher = new LotusWebsiteDataFetcher();
-        final CompareService compareService = new CompareService();
-        final MailHandler mailHandler = new MailHandler();
-        LOG.info("LotusBot has been initialized");
-
-        final List<LotusItem> savedLotusItem = cacheService.readItemsFromCache();
         final List<LotusItem> fetchedLotusItem = lotusWebsiteDataFetcher.checkSites();
-        cacheService.writeToCache(fetchedLotusItem);
+        lotusDao.update(fetchedLotusItem);
+        final CompareService compareService = new CompareService();
         final List<String> notificationToSend = compareService.compare(savedLotusItem, fetchedLotusItem);
         if (!notificationToSend.isEmpty()) {
+            final MailHandler mailHandler = new MailHandler();
             mailHandler.sendNotifications(notificationToSend);
         }
     }

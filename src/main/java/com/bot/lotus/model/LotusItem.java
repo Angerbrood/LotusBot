@@ -1,24 +1,33 @@
 package com.bot.lotus.model;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.Objects;
 
-@DatabaseTable(tableName = "LotusItem")
+
+
+@Entity
+@Table(name = "LotusItem")
 public class LotusItem {
     public static final String DELIMITER = ";";
 
-    @DatabaseField(generatedId = true)
-    private long lotusId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private long id;
 
-    @DatabaseField
+    @Column
     private String title;
 
-    @DatabaseField
+    @Column
     private long price;
 
-    @DatabaseField
+    @Column
     private String url;
 
     public LotusItem(String title, String price, String url) {
@@ -29,12 +38,12 @@ public class LotusItem {
 
     public LotusItem() {}
 
-    public long getLotusId() {
-        return lotusId;
+    public long getId() {
+        return id;
     }
 
-    public void setLotusId(long lotusId) {
-        this.lotusId = lotusId;
+    public void setId(long lotusId) {
+        this.id = lotusId;
     }
 
     public void setTitle(String title) {

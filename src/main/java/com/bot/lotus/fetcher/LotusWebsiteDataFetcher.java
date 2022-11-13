@@ -47,7 +47,7 @@ public class LotusWebsiteDataFetcher {
                     .orElseThrow(IllegalArgumentException::new);
 
             final String price = Optional.ofNullable(getElementByClassAndTag(doc, PRICE_CSS_CLASS, P_TAG))
-                    .map(this::readValueFromElement)
+                    .map(this::readFormattedValueFromElement)
                     .orElseThrow(IllegalArgumentException::new);
 
             LOG.info("Reading has finished");
@@ -58,9 +58,13 @@ public class LotusWebsiteDataFetcher {
         }
     }
 
-    private String readValueFromElement(final Element element) {
+    private String readFormattedValueFromElement(final Element element) {
         final String value = element.childNode(0).outerHtml();
         return ValueFormatter.formatPriceValue(value);
+    }
+
+    private String readValueFromElement(final Element element) {
+        return element.childNode(0).outerHtml();
     }
 
     private Element getElementByClassAndTag(final Document document, final String cssClass, final String tag) {
