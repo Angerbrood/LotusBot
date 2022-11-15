@@ -33,10 +33,11 @@ public class LotusItemDao {
 
     public void update(final List<LotusItem> lotusItems) {
         LOG.info("Starting to write to cache");
+        clear();
         Transaction transaction = null;
         try (final Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            lotusItems.forEach(session::merge);
+            lotusItems.forEach(session::persist);
             transaction.commit();
         } catch (Exception ex) {
             if (transaction != null) {
@@ -45,5 +46,20 @@ public class LotusItemDao {
             LOG.error(ex.getMessage(), ex);
         }
         LOG.info("Writing has finished");
+    }
+
+    private void clear() {
+        Transaction transaction = null;
+        final List<LotusItem> lotusItems = findAll();
+        try (final Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            lotusItems.forEach(session::remove);
+            transaction.commit();
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            LOG.error(ex.getMessage(), ex);
+        }
     }
 }
